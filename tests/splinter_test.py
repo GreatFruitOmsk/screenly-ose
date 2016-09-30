@@ -5,7 +5,6 @@ from settings import settings
 from lib import db
 from lib import assets_helper
 import unittest
-import urllib2
 from datetime import datetime, timedelta
 
 asset_x = {
