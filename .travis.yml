@@ -15,10 +15,11 @@ before_script:
   - cp ansible/roles/screenly/files/screenly.conf ~/.screenly/
   - cp ansible/roles/screenly/files/screenly.db ~/.screenly/
   - echo -e "[local]\nlocalhost ansible_connection=local" > ansible/localhost
-  - curl -O http://orig04.deviantart.net/7f89/f/2016/173/7/0/ussr_tyan_by_kawaielli-da76ghz.jpg > /tmp/image.jpg
-  - curl -O https://www.screenly.io/upload/ose_tests/little_buck_bunny_trailer_480p.mov > /tmp/video.mov
+  - curl http://orig04.deviantart.net/7f89/f/2016/173/7/0/ussr_tyan_by_kawaielli-da76ghz.jpg > /tmp/image.jpg
+  - curl https://www.screenly.io/upload/ose_tests/little_buck_bunny_trailer_480p.mov > /tmp/video.mov
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
+  - python server.py
   - sleep 3 # give xvfb some time to start
 script:
   - find . -name \*.py -exec pep8 --ignore=E402,E501,E731 {} +
