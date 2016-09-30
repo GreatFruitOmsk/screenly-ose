@@ -36,13 +36,14 @@ asset_y = {
 
 def wait_for_and_do(browser, query, callback):
     not_filled = True
+    n = 0
 
-    while not_filled:
+    while not_filled and n < 20:
         try:
             callback(browser.find_by_css(query).first)
             not_filled = False
         except ElementNotVisibleException:
-            pass
+            n += 1
 
 
 class WebTest(unittest.TestCase):
