@@ -58,6 +58,8 @@ class WebTest(unittest.TestCase):
     def test_add_asset_url(self):
         with Browser() as browser:
             browser.visit('http://localhost:8080')
+            sleep(2)
+
             browser.find_by_id('add-asset-button').click()
 
             wait_for_and_do(browser, 'input[name="uri"]', lambda field: field.fill('http://example.com'))
@@ -83,8 +85,9 @@ class WebTest(unittest.TestCase):
 
         with Browser() as browser:
             browser.visit('http://localhost:8080')
-            browser.find_by_css('.edit-asset-button').click()
+            sleep(2)
 
+            wait_for_and_do(browser, '.edit-asset-button', lambda btn: btn.click())
             wait_for_and_do(browser, 'input[name="duration"]', lambda field: field.fill('333'))
             sleep(2)  # wait for new-asset panel animation
 
@@ -104,8 +107,9 @@ class WebTest(unittest.TestCase):
 
         with Browser() as browser:
             browser.visit('http://localhost:8080')
-            browser.find_by_id('add-asset-button').click()
+            sleep(2)
 
+            browser.find_by_id('add-asset-button').click()
             wait_for_and_do(browser, 'a[href="#tab-file_upload"]', lambda tab: tab.click())
             wait_for_and_do(browser, 'input[name="file_upload"]', lambda input: input.fill(image_file))
             sleep(2)  # wait for new-asset panel animation
@@ -128,8 +132,9 @@ class WebTest(unittest.TestCase):
 
         with Browser() as browser:
             browser.visit('http://localhost:8080')
-            browser.find_by_id('add-asset-button').click()
+            sleep(2)
 
+            browser.find_by_id('add-asset-button').click()
             wait_for_and_do(browser, 'a[href="#tab-file_upload"]', lambda tab: tab.click())
             wait_for_and_do(browser, 'input[name="file_upload"]', lambda input: input.fill(video_file))
             sleep(2)  # wait for new-asset panel animation
@@ -153,6 +158,8 @@ class WebTest(unittest.TestCase):
 
         with Browser() as browser:
             browser.visit('http://localhost:8080')
+            sleep(2)
+
             wait_for_and_do(browser, '.delete-asset-button', lambda btn: btn.click())
             wait_for_and_do(browser, '.confirm-delete', lambda btn: btn.click())
             sleep(3)  # backend need time to process request
@@ -167,6 +174,7 @@ class WebTest(unittest.TestCase):
 
         with Browser() as browser:
             browser.visit('http://localhost:8080')
+            sleep(2)
             wait_for_and_do(browser, 'span[class="on"]', lambda btn: btn.click())
             sleep(3)  # backend need time to process request
 
@@ -185,6 +193,8 @@ class WebTest(unittest.TestCase):
 
         with Browser() as browser:
             browser.visit('http://localhost:8080')
+            sleep(2)
+
             wait_for_and_do(browser, 'span[class="off"]', lambda btn: btn.click())
             sleep(3)  # backend need time to process request
 
@@ -205,6 +215,7 @@ class WebTest(unittest.TestCase):
         with Browser() as browser:
             browser.visit('http://localhost:8080')
             sleep(2)
+
             asset_x_for_drag = browser.find_by_id(asset_x['asset_id'])
             sleep(1)
 
