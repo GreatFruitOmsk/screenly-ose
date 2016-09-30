@@ -14,6 +14,11 @@ before_script:
   - cp ansible/roles/screenly/files/uzbl-config ~/.config/uzbl/config-screenly
   - cp ansible/roles/screenly/files/screenly.conf ~/.screenly/
   - echo -e "[local]\nlocalhost ansible_connection=local" > ansible/localhost
+  - wget http://orig04.deviantart.net/7f89/f/2016/173/7/0/ussr_tyan_by_kawaielli-da76ghz.jpg > /tmp/image.jpg
+  - wget https://www.screenly.io/upload/ose_tests/little_buck_bunny_trailer_480p.mov > /tmp/video.mov
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - sleep 3 # give xvfb some time to start
 script:
   - find . -name \*.py -exec pep8 --ignore=E402,E501,E731 {} +
   - nosetests -v -a '!fixme' --with-isolation
