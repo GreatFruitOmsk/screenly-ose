@@ -61,7 +61,8 @@ class WebTest(unittest.TestCase):
             browser.visit('http://localhost:8080')
             sleep(2)
 
-            browser.find_by_id('add-asset-button').click()
+            wait_for_and_do(browser, '#add-asset-button', lambda btn: btn.click())
+            sleep(2)
 
             wait_for_and_do(browser, 'input[name="uri"]', lambda field: field.fill('http://example.com'))
             sleep(2)  # wait for new-asset panel animation
@@ -89,6 +90,8 @@ class WebTest(unittest.TestCase):
             sleep(2)
 
             wait_for_and_do(browser, '.edit-asset-button', lambda btn: btn.click())
+            sleep(2)
+
             wait_for_and_do(browser, 'input[name="duration"]', lambda field: field.fill('333'))
             sleep(2)  # wait for new-asset panel animation
 
@@ -111,6 +114,8 @@ class WebTest(unittest.TestCase):
             sleep(2)
 
             browser.find_by_id('add-asset-button').click()
+            sleep(2)
+
             wait_for_and_do(browser, 'a[href="#tab-file_upload"]', lambda tab: tab.click())
             wait_for_and_do(browser, 'input[name="file_upload"]', lambda input: input.fill(image_file))
             sleep(2)  # wait for new-asset panel animation
@@ -136,6 +141,8 @@ class WebTest(unittest.TestCase):
             sleep(2)
 
             browser.find_by_id('add-asset-button').click()
+            sleep(2)
+            
             wait_for_and_do(browser, 'a[href="#tab-file_upload"]', lambda tab: tab.click())
             wait_for_and_do(browser, 'input[name="file_upload"]', lambda input: input.fill(video_file))
             sleep(2)  # wait for new-asset panel animation
