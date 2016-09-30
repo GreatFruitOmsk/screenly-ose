@@ -19,7 +19,7 @@ before_script:
   - curl https://www.screenly.io/upload/ose_tests/little_buck_bunny_trailer_480p.mov > /tmp/video.mov
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
-  - python server.py
+  - python server.py &
   - sleep 3 # give xvfb some time to start
 script:
   - find . -name \*.py -exec pep8 --ignore=E402,E501,E731 {} +
