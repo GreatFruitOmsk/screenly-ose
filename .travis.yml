@@ -13,6 +13,7 @@ before_script:
   - mkdir -p ~/.screenly ~/.config/uzbl/
   - cp ansible/roles/screenly/files/uzbl-config ~/.config/uzbl/config-screenly
   - cp ansible/roles/screenly/files/screenly.conf ~/.screenly/
+  - cp ansible/roles/screenly/files/screenly.db ~/.screenly/
   - echo -e "[local]\nlocalhost ansible_connection=local" > ansible/localhost
   - curl -O http://orig04.deviantart.net/7f89/f/2016/173/7/0/ussr_tyan_by_kawaielli-da76ghz.jpg > /tmp/image.jpg
   - curl -O https://www.screenly.io/upload/ose_tests/little_buck_bunny_trailer_480p.mov > /tmp/video.mov
