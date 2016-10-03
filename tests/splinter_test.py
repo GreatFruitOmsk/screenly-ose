@@ -35,6 +35,7 @@ asset_y = {
 
 
 def wait_for_and_do(browser, query, callback):
+    print "hello"
     not_filled = True
     n = 0
 
@@ -43,6 +44,9 @@ def wait_for_and_do(browser, query, callback):
             callback(browser.find_by_css(query).first)
             not_filled = False
         except ElementNotVisibleException:
+            print n
+            if n > 10:
+                raise n
             n += 1
 
 
@@ -59,16 +63,13 @@ class WebTest(unittest.TestCase):
     def test_add_asset_url(self):
         with Browser() as browser:
             browser.visit('http://localhost:8080')
-            sleep(2)
 
             wait_for_and_do(browser, '#add-asset-button', lambda btn: btn.click())
-            sleep(2)
-
+            sleep(1)
             wait_for_and_do(browser, 'input[name="uri"]', lambda field: field.fill('http://example.com'))
-            sleep(2)  # wait for new-asset panel animation
-
+            sleep(1)
             wait_for_and_do(browser, '#save-asset', lambda btn: btn.click())
-            sleep(3)  # backend need time to process request
+            sleep(2)  # backend need time to process request
 
         with db.conn(settings['database']) as conn:
             assets = assets_helper.read(conn)
@@ -87,16 +88,14 @@ class WebTest(unittest.TestCase):
 
         with Browser() as browser:
             browser.visit('http://localhost:8080')
-            sleep(2)
-
             wait_for_and_do(browser, '.edit-asset-button', lambda btn: btn.click())
-            sleep(2)
+            sleep(1)  # backend need time to process request
 
             wait_for_and_do(browser, 'input[name="duration"]', lambda field: field.fill('333'))
-            sleep(2)  # wait for new-asset panel animation
+            sleep(1)  # wait for new-asset panel animation
 
             wait_for_and_do(browser, '#save-asset', lambda btn: btn.click())
-            sleep(3)  # backend need time to process request
+            sleep(2)  # backend need time to process request
 
         with db.conn(settings['database']) as conn:
             assets = assets_helper.read(conn)
@@ -142,7 +141,7 @@ class WebTest(unittest.TestCase):
 
             browser.find_by_id('add-asset-button').click()
             sleep(2)
-            
+
             wait_for_and_do(browser, 'a[href="#tab-file_upload"]', lambda tab: tab.click())
             wait_for_and_do(browser, 'input[name="file_upload"]', lambda input: input.fill(video_file))
             sleep(2)  # wait for new-asset panel animation
