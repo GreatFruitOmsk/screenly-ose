@@ -47,9 +47,6 @@ def wait_for_and_do(browser, query, callback):
                 raise n
             n += 1
 
-
-executable_path = {'executable_path':'/usr/bin/chromium'}
-
 class WebTest(unittest.TestCase):
     def setUp(self):
         with db.conn(settings['database']) as conn:
@@ -61,12 +58,14 @@ class WebTest(unittest.TestCase):
         pass
 
     def test_add_asset_url(self):
-        with Browser('chrome') as browser:
+        with Browser() as browser:
             browser.visit('http://localhost:8080')
 
             wait_for_and_do(browser, '#add-asset-button', lambda btn: btn.click())
             sleep(1)
             wait_for_and_do(browser, 'input[name="uri"]', lambda field: field.fill('http://example.com'))
+            sleep(1)
+            wait_for_and_do(browser, '#add-form', lambda form: form.click())
             sleep(1)
             wait_for_and_do(browser, '#save-asset', lambda btn: btn.click())
             sleep(2)  # backend need time to process request
@@ -94,6 +93,9 @@ class WebTest(unittest.TestCase):
             wait_for_and_do(browser, 'input[name="duration"]', lambda field: field.fill('333'))
             sleep(1)  # wait for new-asset panel animation
 
+            wait_for_and_do(browser, '#add-form', lambda form: form.click())
+            sleep(1)
+
             wait_for_and_do(browser, '#save-asset', lambda btn: btn.click())
             sleep(2)  # backend need time to process request
 
@@ -117,7 +119,10 @@ class WebTest(unittest.TestCase):
 
             wait_for_and_do(browser, 'a[href="#tab-file_upload"]', lambda tab: tab.click())
             wait_for_and_do(browser, 'input[name="file_upload"]', lambda input: input.fill(image_file))
-            sleep(2)  # wait for new-asset panel animation
+            sleep(1)  # wait for new-asset panel animation
+
+            wait_for_and_do(browser, '#add-form', lambda form: form.click())
+            sleep(1)
 
             wait_for_and_do(browser, '#save-asset', lambda btn: btn.click())
             sleep(5)  # backend need time to process request
@@ -144,7 +149,10 @@ class WebTest(unittest.TestCase):
 
             wait_for_and_do(browser, 'a[href="#tab-file_upload"]', lambda tab: tab.click())
             wait_for_and_do(browser, 'input[name="file_upload"]', lambda input: input.fill(video_file))
-            sleep(2)  # wait for new-asset panel animation
+            sleep(1)  # wait for new-asset panel animation
+
+            wait_for_and_do(browser, '#add-form', lambda form: form.click())
+            sleep(1)
 
             wait_for_and_do(browser, '#save-asset', lambda btn: btn.click())
             sleep(10)  # backend need time to process request
