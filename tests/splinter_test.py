@@ -35,7 +35,6 @@ asset_y = {
 
 
 def wait_for_and_do(browser, query, callback):
-    print "hello"
     not_filled = True
     n = 0
 
@@ -44,11 +43,12 @@ def wait_for_and_do(browser, query, callback):
             callback(browser.find_by_css(query).first)
             not_filled = False
         except ElementNotVisibleException:
-            print n
             if n > 10:
                 raise n
             n += 1
 
+
+executable_path = {'executable_path':'/usr/bin/chromium'}
 
 class WebTest(unittest.TestCase):
     def setUp(self):
@@ -61,7 +61,7 @@ class WebTest(unittest.TestCase):
         pass
 
     def test_add_asset_url(self):
-        with Browser() as browser:
+        with Browser('chrome') as browser:
             browser.visit('http://localhost:8080')
 
             wait_for_and_do(browser, '#add-asset-button', lambda btn: btn.click())
