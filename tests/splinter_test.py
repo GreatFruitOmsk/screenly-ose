@@ -70,6 +70,8 @@ class WebTest(unittest.TestCase):
             wait_for_and_do(browser, '#save-asset', lambda btn: btn.click())
             sleep(2)  # backend need time to process request
 
+            browser.driver.save_screenshot('/tmp/screenshot.png')
+
         with db.conn(settings['database']) as conn:
             assets = assets_helper.read(conn)
 
