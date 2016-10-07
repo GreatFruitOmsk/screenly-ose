@@ -85,7 +85,9 @@ def get_video_duration(file):
                         time = timedelta(hours=hours, minutes=minutes, seconds=seconds)
                     break
         else:
+            print 'do run mplayer'
             run_mplayer = mplayer('-identify', '-frames', '0', '-nosound', file)
+            print  run_mplayer
             for line in run_mplayer.split('\n'):
                 if 'ID_LENGTH=' in line:
                     time = timedelta(seconds=int(float(line.split('=')[1])))
