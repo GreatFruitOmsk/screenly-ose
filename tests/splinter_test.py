@@ -38,14 +38,15 @@ def wait_for_and_do(browser, query, callback):
     not_filled = True
     n = 0
 
-    while not_filled and n < 20:
+    while not_filled:
         try:
             callback(browser.find_by_css(query).first)
             not_filled = False
-        except ElementNotVisibleException:
-            if n > 10:
-                raise n
+        except ElementNotVisibleException, e:
+            if n > 20:
+                raise e
             n += 1
+            
 
 class WebTest(unittest.TestCase):
     def setUp(self):
