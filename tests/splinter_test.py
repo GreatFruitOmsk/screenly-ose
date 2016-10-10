@@ -162,7 +162,7 @@ class WebTest(unittest.TestCase):
             sleep(1)
 
             wait_for_and_do(browser, '#save-asset', lambda btn: btn.click())
-            sleep(10)  # backend need time to process request
+            sleep(2)  # backend need time to process request
 
         with db.conn(settings['database']) as conn:
             assets = assets_helper.read(conn)
