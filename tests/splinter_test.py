@@ -170,7 +170,7 @@ class WebTest(unittest.TestCase):
 
             self.assertEqual(asset['name'], u'video.mov')
             self.assertEqual(asset['mimetype'], u'video')
-            self.assertEqual(asset['duration'], u'32')
+            self.assertEqual(asset['duration'], u'33')
 
     def test_rm_asset(self):
         with db.conn(settings['database']) as conn:
