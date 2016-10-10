@@ -46,7 +46,7 @@ def wait_for_and_do(browser, query, callback):
             if n > 20:
                 raise e
             n += 1
-            
+
 
 class WebTest(unittest.TestCase):
     def setUp(self):
@@ -65,6 +65,7 @@ class WebTest(unittest.TestCase):
             wait_for_and_do(browser, '#add-asset-button', lambda btn: btn.click())
             sleep(1)
             wait_for_and_do(browser, 'input[name="uri"]', lambda field: field.fill('http://example.com'))
+            wait_for_and_do(browser, 'input[name="duration"]', lambda field: field.fill('30'))
             sleep(1)
             wait_for_and_do(browser, '#add-form', lambda form: form.click())
             sleep(1)
@@ -124,6 +125,7 @@ class WebTest(unittest.TestCase):
 
             wait_for_and_do(browser, 'a[href="#tab-file_upload"]', lambda tab: tab.click())
             wait_for_and_do(browser, 'input[name="file_upload"]', lambda input: input.fill(image_file))
+            wait_for_and_do(browser, 'input[name="duration"]', lambda field: field.fill('30'))
             sleep(1)  # wait for new-asset panel animation
 
             wait_for_and_do(browser, '#add-form', lambda form: form.click())
