@@ -5,6 +5,7 @@ addons:
   apt:
     packages:
       - net-tools
+      - mplayer
 install:
   - pip install -U pip
   - pip install -r requirements.txt
