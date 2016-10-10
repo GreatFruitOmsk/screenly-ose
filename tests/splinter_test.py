@@ -69,12 +69,9 @@ class WebTest(unittest.TestCase):
             sleep(1)
             wait_for_and_do(browser, '#add-form', lambda form: form.click())
             sleep(1)
-            browser.driver.save_screenshot('/tmp/screenshot1.png')
 
             wait_for_and_do(browser, '#save-asset', lambda btn: btn.click())
             sleep(2)  # backend need time to process request
-
-            browser.driver.save_screenshot('/tmp/screenshot2.png')
 
         with db.conn(settings['database']) as conn:
             assets = assets_helper.read(conn)
