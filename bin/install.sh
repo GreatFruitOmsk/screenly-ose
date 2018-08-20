@@ -72,6 +72,19 @@ else
    export DEVICE_TYPE="pi1"
 fi
 
+machine=$(uname -m)
+
+case "$machine" in
+  "armv6"*)
+    export ARCH="armv6"
+    ;;
+  "armv7"*)
+    export ARCH="armv7"
+    ;;
+  "armv8"*)
+    export ARCH="aarch64"
+esac
+
 set -x
 sudo mkdir -p /etc/ansible
 echo -e "[local]\nlocalhost ansible_connection=local" | sudo tee /etc/ansible/hosts > /dev/null

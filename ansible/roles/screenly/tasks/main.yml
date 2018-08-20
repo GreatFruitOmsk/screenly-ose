@@ -94,45 +94,74 @@
 - debug:
     msg: "Use {{ docker_tag }} version of images."
 
+- name: Pull screenly-server image
+  command: balena pull screenly/screenly-ose-server:{{ docker_tag }}
+
+- name: Pull screenly-viewer image
+  command: balena pull screenly/screenly-ose-viewer:{{ docker_tag }}-{{ device_type }}
+
+- name: Pull screenly-websocket-server image
+  command: balena pull screenly/screenly-ose-websocket:{{ docker_tag }}
+
+- name: Get containers list
+  command: balena container ls -a
+  register: containers
+
+- name: Stop screenly-server container
+  command: balena stop screenly-ose-server
+  when: not containers.stdout.find('screenly-ose-server') == -1
+
+- name: Remove screenly-server container
+  command: balena rm screenly-ose-server
+  when: not containers.stdout.find('screenly-ose-server') == -1
+
 - name: Create screenly-server container
-  docker_container:
-    name: screenly-ose-server
-    image: "screenly/screenly-ose-server:{{ docker_tag }}"
-    pull: true
-    state: started
-    recreate: true
-    restart_policy: unless-stopped
-    network_mode: host
-    privileged: yes
-    volumes:
-      - /home/pi/screenly:/home/pi/screenly
-      - /home/pi/.screenly:/home/pi/.screenly
-      - /home/pi/screenly_assets:/home/pi/screenly_assets
+  command: >
+    balena run -td
+    --privileged=true
+    --name=screenly-ose-server
+    --network=host
+    --restart=unless-stopped
+    -v /home/pi/screenly:/home/pi/screenly
+    -v /home/pi/.screenly:/home/pi/.screenly
+    -v /home/pi/screenly_assets:/home/pi/screenly_assets
+    screenly/screenly-ose-server:{{ docker_tag }}
+
+- name: Stop screenly-viewer container
+  command: balena stop screenly-ose-viewer
+  when: not containers.stdout.find('screenly-ose-viewer') == -1
+
+- name: Remove screenly-viewer container
+  command: balena rm screenly-ose-viewer
+  when: not containers.stdout.find('screenly-ose-viewer') == -1
 
 - name: Create screenly-viewer container
-  docker_container:
-    name: screenly-ose-viewer
-    image: "screenly/screenly-ose-viewer:{{ docker_tag }}-{{ device_type }}"
-    pull: true
-    state: started
-    recreate: true
-    restart_policy: unless-stopped
-    network_mode: host
-    privileged: yes
-    volumes:
-      - /home/pi/screenly:/home/pi/screenly
-      - /home/pi/.screenly:/home/pi/.screenly
-      - /home/pi/screenly_assets:/home/pi/screenly_assets
+  command: >
+    balena run -td
+    --privileged=true
+    --name=screenly-ose-viewer
+    --network=host
+    --restart=unless-stopped
+    -v /home/pi/screenly:/home/pi/screenly
+    -v /home/pi/.screenly:/home/pi/.screenly
+    -v /home/pi/screenly_assets:/home/pi/screenly_assets
+    screenly/screenly-ose-viewer:{{ docker_tag }}-{{ device_type }}
+
+- name: Stop screenly-websocket container
+  command: balena stop screenly-ose-websocket
+  when: not containers.stdout.find('screenly-ose-websocket') == -1
+
+- name: Remove screenly-websocket container
+  command: balena rm screenly-ose-websocket
+  when: not containers.stdout.find('screenly-ose-websocket') == -1
 
 - name: Create screenly-websocket-server container
-  docker_container:
-    name: screenly-ose-websocket
-    image: "screenly/screenly-ose-websocket:{{ docker_tag }}"
-    pull: true
-    state: started
-    recreate: true
-    restart_policy: unless-stopped
-    network_mode: host
-    volumes:
-      - /home/pi/screenly:/home/pi/screenly
-      - /home/pi/.screenly:/home/pi/.screenly
+  command: >
+    balena run -td
+    --privileged=true
+    --name=screenly-ose-websocket
+    --network=host
+    --restart=unless-stopped
+    -v /home/pi/screenly:/home/pi/screenly
+    -v /home/pi/.screenly:/home/pi/.screenly
+    screenly/screenly-ose-websocket:{{ docker_tag }}

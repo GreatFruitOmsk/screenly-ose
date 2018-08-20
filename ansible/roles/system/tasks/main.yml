@@ -185,6 +185,7 @@
     state: absent
   with_items:
     - dphys-swapfile
+    - docker-ce
     - lightdm
     - lightdm-gtk-greeter
     - matchbox
@@ -195,32 +196,34 @@
     - x11-xserver-utils
     - xserver-xorg
 
-- name: Add docker apt key
-  apt_key:
-    url: https://download.docker.com/linux/raspbian/gpg
-    state: present
+- name: Download Balena
+  get_url:
+    url: "https://github.com/resin-os/balena/releases/download/{{ balena_tag }}/balena-{{ balena_tag }}-{{ arch }}.tar.gz"
+    dest: /tmp/balena.tar.gz
 
-- name : Get raspbian name
-  command: lsb_release -cs
-  register: raspbian_name
+- name: Unarchive Balena
+  unarchive:
+    src: /tmp/balena.tar.gz
+    dest: /tmp
+    owner: pi
+    group: pi
 
-- name: Add Docker repo
-  lineinfile:
-    path: /etc/apt/sources.list.d/docker.list
-    create: yes
-    line: "deb [arch=armhf] https://download.docker.com/linux/raspbian {{ raspbian_name.stdout }} edge"
-    state: present
+- name: Copy balena to /usr/local/bin
+  copy:
+    src: /tmp/balena/
+    dest: /usr/local/bin
+    mode: 0755
 
-- name: Install Docker
-  apt:
-    name: docker-ce
-    update_cache: yes
-    install_recommends: no
+- name: Copy balena systemd unit
+  copy:
+    src: balena.service
+    dest: /etc/systemd/system/balena.service
 
-- name: Add pi to docker group
-  user:
-    name: pi
-    group: docker
+- name: Enable balenad service
+  systemd:
+    name: balena.service
+    enabled: yes
+    state: started
 
 - name: Perform system upgrade
   apt:
